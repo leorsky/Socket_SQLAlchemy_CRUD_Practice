@@ -87,7 +87,44 @@ def main():
 
                 client_socket.sendall(response.encode())
 
+            elif request_json['method'].upper() == 'GET':
+                response = Method.method_get()
+
+                client_socket.sendall(response.encode())
+
+            elif request_json['method'].upper() == 'PUT':
+                response = Method.method_put(
+                    request_json['id'],
+                    request_json['title'],
+                    request_json['description'],
+                    request_json['completed']
+                )
+
+                client_socket.sendall(response.encode())
+
+            elif request_json['method'].upper() == 'PATCH':
+                response = Method.method_patch(
+                    request_json['id'],
+                    request_json['title'],
+                    request_json['description'],
+                    request_json['completed']
+                )
+
+                client_socket.sendall(response.encode())
+
+            elif request_json['method'].upper() == 'DELETE':
+                response = Method.method_delete(
+                    request_json['id']
+                )
+
+                client_socket.sendall(response.encode())
+
+            else:
+                response = 'HTTP 400 Bad Request'
+                client_socket.sendall(response.encode())
+
         client_socket.close()
+
 
 if __name__ == '__main__':
     main()
