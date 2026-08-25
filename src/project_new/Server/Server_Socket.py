@@ -1,3 +1,4 @@
+import json
 import socket
 
 
@@ -17,6 +18,14 @@ def main():
         client_socket, addr = server_socket.accept()
 
         print(f'Client connected: {addr}')
+
+        while True:
+            request = client_socket.recv(1024).decode()
+
+            if not request:
+                break
+
+            request_json = json.loads(request)
 
 
 
