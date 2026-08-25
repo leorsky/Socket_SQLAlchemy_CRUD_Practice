@@ -21,3 +21,17 @@ def verify_login(check_login: str) -> bool:
 
 def verify_password(check_password: str) -> bool:
     return pwd_context.verify(check_password, PASSWORD_HASH)
+
+def check_method(method_check: int) -> tuple[str, bool]:
+    if method_check == 1:
+        return 'POST', False
+    elif method_check == 2:
+        return 'GET', False
+    elif method_check == 3:
+        return 'PUT', False
+    elif method_check == 4:
+        return 'PATCH', False
+    elif method_check == 5:
+        return 'DELETE', False
+    else:
+        return '400', True
