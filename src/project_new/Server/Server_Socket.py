@@ -2,6 +2,7 @@ import json
 import socket
 
 from project_new.src.project_new.Сhecker import checker
+from project_new.src.project_new.Method import Method
 
 
 HOST = 'localhost'
@@ -76,6 +77,15 @@ def main():
                 break
 
             request_json = json.loads(request)
+
+            if request_json['method'].upper() == 'POST':
+                response = Method.method_post(
+                    request_json['title'],
+                    request_json['description'],
+                    request_json['completed']
+                )
+
+                client_socket.sendall(response.encode())
 
         client_socket.close()
 
