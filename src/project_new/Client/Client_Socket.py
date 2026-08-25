@@ -33,8 +33,28 @@ while True:
 
             if fail:
                 raise Exception(method)
+
             else:
-                pass
+                if method == 'POST':
+                    fail, title, description, completed = text_def.post_f()
+
+                    if fail:
+                        raise Exception('Некорректное значение completed')
+
+                    request = {
+                        'method': method,
+                        'title': title,
+                        'description': description,
+                        'completed': completed
+                    }
+
+                    request_json = json.dumps(request)
+                    client_socket.sendall(request_json.encode())
+
+                    response = client_socket.recv(1024).decode()
+                    print(response)
+
+
 
     except ConnectionResetError:
         print('Connection reset error')
