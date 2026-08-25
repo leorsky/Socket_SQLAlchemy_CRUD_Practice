@@ -77,5 +77,7 @@ def main():
 
             request_json = json.loads(request)
 
+        client_socket.close()
+
 if __name__ == '__main__':
     main()
