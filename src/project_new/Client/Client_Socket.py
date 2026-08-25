@@ -33,3 +33,15 @@ while True:
 
             if fail:
                 raise Exception(method)
+            else:
+                pass
+
+    except ConnectionResetError:
+        print('Connection reset error')
+        break
+
+    except Exception as e:
+        print(f'Error: {e}')
+        continue
+
+client_socket.close()
