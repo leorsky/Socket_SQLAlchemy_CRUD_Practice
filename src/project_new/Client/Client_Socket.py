@@ -54,7 +54,48 @@ while True:
                     response = client_socket.recv(1024).decode()
                     print(response)
 
+                elif method == 'GET':
+                    request = {'method': method}
+                    request_json = json.dumps(request)
 
+                    client_socket.sendall(request_json.encode())
+
+                    response = client_socket.recv(1024).decode()
+                    print(response)
+
+                elif method == 'PUT':
+                    task_id, title, description, completed, fail = text_def.put_f()
+
+                    if fail:
+                        raise Exception('Некорректное значение completed')
+
+                    request = {
+                        'method': method,
+                        'id': task_id,
+                        'title': title,
+                        'description': description,
+                        'completed': completed
+                    }
+
+                    request_json = json.dumps(request)
+                    client_socket.sendall(request_json.encode())
+
+                    response = client_socket.recv(1024).decode()
+                    print(response)
+
+                elif method == 'DELETE':
+                    task_id = text_def.delete_f()
+
+                    request = {
+                        'method': method,
+                        'id': task_id
+                    }
+
+                    request_json = json.dumps(request)
+                    client_socket.sendall(request_json.encode())
+
+                    response = client_socket.recv(1024).decode()
+                    print(response)
 
     except ConnectionResetError:
         print('Connection reset error')
