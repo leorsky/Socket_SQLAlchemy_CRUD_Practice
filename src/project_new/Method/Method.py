@@ -32,3 +32,26 @@ def method_post(title: str, description: str, completed: bool) -> str:
             session.rollback()
             print(f'Сбой: {e}')
             return f'HTTP 500 {e}'
+
+def method_get() -> str:
+    with SessionLocal() as session:
+        try:
+            statement = select(Tasks)
+
+            result = session.execute(statement)
+
+            tasks = result.scalars().all()
+
+            response = ('HTTP 200 OK\n'
+                        'Tasks:\n')
+
+            for task in tasks:
+                response += f'{task.id} - {task.title} - {task.description} - {task.completed} - {task.created_at}\n'
+
+
+            return response
+
+        except Exception as e:
+            session.rollback()
+            print(f'Сбой: {e}')
+            return f'HTTP 500 {e}'
