@@ -55,3 +55,73 @@ def method_get() -> str:
             session.rollback()
             print(f'Сбой: {e}')
             return f'HTTP 500 {e}'
+
+
+
+def method_put(task_id: int, title: str, description: str, completed: bool) -> str:
+    with SessionLocal() as session:
+        try:
+            statement = select(Tasks).where(Tasks.id == task_id)
+            task = session.execute(statement).scalar_one_or_none()
+
+            if task is None:
+                return 'HTTP 404 Task Not Found'
+
+            task.title = title
+            task.description = description
+            task.completed = completed
+
+            session.commit()
+
+            return 'HTTP 200 OK'
+
+        except Exception as e:
+            session.rollback()
+            print(f'Сбой: {e}')
+            return f'HTTP 500 {e}'
+
+def method_patch(task_id: int, title: str | None, description: str | None, completed: bool | None) -> str:
+    with SessionLocal() as session:
+        try:
+            statement = select(Tasks).where(Tasks.id == task_id)
+            task = session.execute(statement).scalar_one_or_none()
+
+            if task is None:
+                return 'HTTP 404 Task Not Found'
+
+            if title is not None:
+                task.title = title
+
+            if description is not None:
+                task.description = description
+
+            if completed is not None:
+                task.completed = completed
+
+            session.commit()
+
+            return 'HTTP 200 OK'
+
+        except Exception as e:
+            session.rollback()
+            print(f'Сбой: {e}')
+            return f'HTTP 500 {e}'
+
+def method_delete(task_id: int) -> str:
+    with SessionLocal() as session:
+        try:
+            statement = select(Tasks).where(Tasks.id == task_id)
+            task = session.execute(statement).scalar_one_or_none()
+
+            if task is None:
+                return 'HTTP 404 Task Not Found'
+
+            session.delete(task)
+            session.commit()
+
+            return 'HTTP 204 No Content'
+
+        except Exception as e:
+            session.rollback()
+            print(f'Сбой: {e}')
+            return f'HTTP 500 {e}'
