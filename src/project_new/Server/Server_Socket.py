@@ -70,5 +70,12 @@ def main():
                 client_socket.sendall(response_json.encode())
                 continue
 
+            request = client_socket.recv(1024).decode()
+
+            if not request:
+                break
+
+            request_json = json.loads(request)
+
 if __name__ == '__main__':
     main()
