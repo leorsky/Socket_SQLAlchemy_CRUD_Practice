@@ -83,6 +83,26 @@ while True:
                     response = client_socket.recv(1024).decode()
                     print(response)
 
+                elif method == 'PATCH':
+                    task_id, title, description, completed, fail = text_def.patch_f()
+
+                    if fail:
+                        raise Exception('Некорректное значение completed')
+
+                    request = {
+                        'method': method,
+                        'id': task_id,
+                        'title': title,
+                        'description': description,
+                        'completed': completed
+                    }
+
+                    request_json = json.dumps(request)
+                    client_socket.sendall(request_json.encode())
+
+                    response = client_socket.recv(1024).decode()
+                    print(response)
+
                 elif method == 'DELETE':
                     task_id = text_def.delete_f()
 
